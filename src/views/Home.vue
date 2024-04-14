@@ -40,6 +40,7 @@ const addMovement = (movement: MovementItem) => {
 const deleteMovement = (id: number) => {
   const index = movements.value.findIndex((movement) => movement.id === id);
   movements.value.splice(index,1);
+  save();
 }
 
 onMounted(() => {

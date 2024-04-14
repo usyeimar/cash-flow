@@ -1,7 +1,13 @@
 
+
 # Cash Flow
 
 Cash Flow, Proyecto creado en base al curso practico de VueJs con Platzi
+
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d1dcf6d6-b449-4093-9797-e9acacfc9d43/deploy-status)](https://app.netlify.com/sites/lambent-tulumba-0e48e4/deploys)
+
+
 
 
 

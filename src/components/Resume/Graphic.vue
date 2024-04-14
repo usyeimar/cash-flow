@@ -4,7 +4,7 @@ import { watch, computed, ref, toRefs } from "vue";
 
 const props = defineProps({
   amounts: {
-    type: Array,
+    type: Array<number>,
     default: () => []
   }
 });
@@ -19,20 +19,22 @@ const amountToPixels = (amount: number) => {
   const amountAbs = amount + Math.abs(min);
   const minMax = Math.abs(max) + Math.abs(min);
 
+  console.log(amountAbs, minMax);
+
   return 200 - ((amountAbs * 100) / minMax) * 2;
 };
 
 const zero = computed(() => {
-  return amountToPixels(0)
+  return isNaN(amountToPixels(0)) ? 0 : amountToPixels(0);
 });
 
 const points = computed(() => {
   const total = amounts.value.length;
-  return Array(total).fill(100).reduce((points, amount, index) => {
-    const x = (300 / total) * (index + 1);
+  return amounts.value.reduce((points, amount, i) => {
+    const x = (300 / total) * (i + 1);
     const y = amountToPixels(amount);
     return `${points} ${x},${y}`;
-  }, "0,100");
+  }, "0, 100");
 
 });
 
@@ -43,10 +45,10 @@ const emit = defineEmits(['select-day']);
 watch(pointer, (value) => {
   const index = Math.ceil((value / (300 / amounts.value.length)) | 0);
 
-  if (index < 0 || index > amounts.value.length) {
+  if (index < 0 || index >= amounts.value.length) {
     return;
   }
-  emit('select-day', amounts.value[index -1 ]);
+  emit('select-day', amounts.value[index - 1]);
 
 });
 
@@ -56,7 +58,7 @@ const tap = ({ target, touches }) => {
   const elementWidth = target.getBoundingClientRect().width;
   const elementX = target.getBoundingClientRect().x;
   const touchX = touches[0].clientX;
-  const x = (touchX - elementX) * 300 / elementWidth;
+  const x = ((touchX - elementX) * 300) / elementWidth;
   pointer.value = x;
 
   emit('select-day', x);
